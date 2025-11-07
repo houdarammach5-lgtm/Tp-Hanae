@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <div id="resultat"></div>
+
+  <script>
+    // 1
+    class Book {
+      constructor(title, author, year) {
+        this.title = title;   
+        this.author = author; 
+        this.year = year;
+      }
+    }
+
+    // 2
+    class Library {
+      constructor() {
+        this.books = [];
+      }
+
+      // ajouter un livre à la bibliothèque
+      addBook(book) {
+        this.books.push(book);
+      }
+
+      // retourner tous les livres d’un auteur donné.
+      findBooksByAuthor(author) {
+        return this.books.filter(book => book.author === author);
+      }
+
+      // affiche tous les livres avec leur titre et auteur seulement
+      displaySummary() {
+        if (this.books.length === 0) return "biblio vide\n";
+        let summary = " ";
+        this.books.forEach(book => {
+          summary += `- ${book.title} de ${book.author}\n`;
+        });
+        return summary;
+      }
+
+      // retourne le nombre de livres pour un auteur donné.
+      countBooksByAuthor(author) {
+        return this.findBooksByAuthor(author).length;
+      }
+
+      // retourne le livre le plus ancien de la bibliothèque.
+      getoldBook() {
+        if (this.books.length === 0) 
+            return null;
+        return this.books.reduce((old, book) => book.year < old.year ? book : old);
+      }
+
+      // supprimer un livre par son titre.
+      removeBook(title) {
+        const index = this.books.findIndex(book => book.title === title);
+        if (index !== -1) {
+          this.books.splice(index, 1);
+          return `${title} supprime `;
+        } else {
+          return ` ${title}" non trouve`;
+        }
+      }
+    }
+
+    // 3
+    const lib = new Library();
+    lib.addBook(new Book("ANTIGONE", "Nana", 2006));
+    lib.addBook(new Book("MESIRABLES", "Aya", 2012));
+
+    
+    let resultat = "";
+    resultat += lib.displaySummary() + "\n";
+    const b = lib.findBooksByAuthor("Nana");
+    b.forEach(book => {
+      resultat += `- ${book.title} (${book.year})\n`;
+    });
+    resultat += `\nNombre de livres : ${lib.countBooksByAuthor("Aya")}\n\n`;
+    const old = lib.getoldBook();
+    resultat += `Le livre le plus ancien est "${old.title}" publié en ${old.year} par ${old.author}.\n\n`;
+
+    resultat += lib.removeBook("libre") + "\n\n";
+    resultat += lib.displaySummary();
+
+    document.getElementById("resultat").textContent = resultat;
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+  <pre id="resultat"></pre>
+
+  <script>
+    // 1
+    class Student {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+        this.grades = [];
+      }
+
+      // 2
+      // ajouter une note au tableau des notes
+      addGrade(grade) {
+        this.grades.push(grade);
+      }
+      // retourner la moyenne des notes
+      getAverageGrade() {
+        if (this.grades.length === 0) 
+            return 0;
+        const total = this.grades.reduce((sum, note) => sum + note, 0);
+        return (total / this.grades.length).toFixed(2);
+      }
+    }
+    // const t=new Student("nana",19);
+    // t.addGrade(12);
+    // t.addGrade(5);
+    // let resultat = "";
+    // resultat += t.getAverageGrade();
+    // console.log(resultat);
+    
+
+
+    // 3
+    const students = [
+      new Student("nana", 19),
+      new Student("aya", 20)
+    ];
+
+    students[0].addGrade(15);
+    students[0].addGrade(16);
+
+    students[1].addGrade(14);
+    students[1].addGrade(19);
+
+    // 4
+    let resultat = "";
+    //resultat += students[0].name;
+    //resultat += students[0].getAverageGrade();
+    students.forEach(s => {
+      resultat += `${s.name} → moyenne : ${s.getAverageGrade()}\n`;
+    });
+    //console.log(resultat);
+
+
+    // 5
+    const moyennestu =(students.reduce((sum, s) => sum + parseFloat(s.getAverageGrade()), 0) / students.length).toFixed(2);
+    resultat += `Moyenne generale des etudiants : ${moyennestu}\n`;
+    //console.log(resultat);
+
+    // 6
+    const amine = students.find(s => s.name === "Amine");
+    resultat += `${amine ? amine.name + ", moyenne " + amine.getAverageGrade() : "Non trouve"}\n`;
+    //console.log(resultat);
+
+    // 7
+    const note12 = students.filter(s => s.getAverageGrade() >= 12);
+    resultat += "les étudiants ayant une note ≥ 12 :\n";
+    // 8
+    note12.forEach(s => {
+      resultat += `${s.name} → moyenne : ${s.getAverageGrade()}\n`;
+    });
+    //console.log(resultat);
+
+    // 9
+    const decroissante = [...students].sort((a, b) => b.getAverageGrade() - a.getAverageGrade());
+    decroissante.forEach(s => {
+      resultat += `${s.name} → moyenne : ${s.getAverageGrade()}\n`;
+    });
+    console.log(resultat);
+
+    document.getElementById("resultat").textContent = resultat;
+  </script>
+
+</body>
+</html>

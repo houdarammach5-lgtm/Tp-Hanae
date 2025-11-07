@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ex3</title>
+</head>
+<body>
+  <pre id="resultat"></pre>
+
+  <script>
+    // 1
+    class Product {
+      constructor(name, price, category) {
+        this.name = name;      
+        this.price = price;    
+        this.category = category;
+      }
+    }
+
+    // 2
+    class Store {
+      constructor() {
+        this.inventory = []; 
+      }
+
+      addProduct(product) {
+        this.inventory.push(product);
+      }
+
+      filterByCategory(category) {
+        return this.inventory.filter(prod => prod.category === category);
+      }
+
+      calculateTotalInventoryValue() {
+        return this.inventory.reduce((total, prod) => total + prod.price, 0).toFixed(2);
+      }
+
+      displayInventory() {
+        if (this.inventory.length === 0) return "magasin vide\n";
+        let text = " ";
+        this.inventory.forEach(prod => {
+          text += `- ${prod.name} , ${prod.category} , ${prod.price} dh\n`;
+        });
+        return text;
+      }
+
+      searchByName(name) {
+        const nom = name.toLowerCase();
+        return this.inventory.filter(prod => prod.name.toLowerCase().includes(nom));
+      }
+
+      filterByPrice(min, max) {
+        return this.inventory.filter(prod => prod.price >= min && prod.price <= max);
+      }
+
+      mostExpensiveProduct() {
+        if (this.inventory.length === 0) return null;
+        return this.inventory.reduce((max, prod) => prod.price > max.price ? prod : max);
+      }
+
+      averagePrice() {
+        if (this.inventory.length === 0) return 0;
+        const total = this.inventory.reduce((sum, prod) => sum + prod.price, 0);
+        return (total / this.inventory.length).toFixed(2);
+      }
+    }
+
+    
+    const myStore = new Store();
+
+    myStore.addProduct(new Product("Laptop HP", 8000, "Électronique"));
+    myStore.addProduct(new Product("Casque Bluetooth", 600, "Électronique"));
+    myStore.addProduct(new Product("Chaussures Nike", 900, "Vêtements"));
+    
+
+    let resultat = "";
+
+    resultat += myStore.displayInventory() + "\n";
+
+    const electronique = myStore.filterByCategory("Électronique");
+    electronique.forEach(p => resultat += `- ${p.name} (${p.price} )\n`);
+    
+
+    resultat += ` Valeur totale de l'inventaire : ${myStore.calculateTotalInventoryValue()} \n`;
+
+    const result = myStore.searchByName("phone");
+    result.forEach(p => resultat += `- ${p.name} (${p.price} )\n`);
+    
+    const pr = myStore.filterByPrice(500, 2000);
+    pr.forEach(p => resultat += `- ${p.name} (${p.price} \n`);
+    
+    const expensive = myStore.mostExpensiveProduct();
+    resultat += `Produit le plus cher : ${expensive.name} (${expensive.price} MAD, ${expensive.category})\n\n`;
+
+    resultat += `prix moyen des produits : ${myStore.averagePrice()} \n`;
+
+    document.getElementById("resultat").textContent = resultat;
+  </script>
+</body>
+</html>
